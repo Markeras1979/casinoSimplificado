@@ -25,4 +25,21 @@ public class Jugada {
 //    resultado VARCHAR(8),
 //    apuesta BIGINT,
 //    FOREIGN KEY (jugador_id) REFERENCES jugador(id)
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Jugador getJugador() {
+		return jugador;
+	}
+
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
+	}
+	
 }
