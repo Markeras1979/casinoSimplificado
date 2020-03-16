@@ -22,7 +22,7 @@
 </div>
 <div style="margin: 10px;">
 	<label for="proveedorInput">Proveedor</label>
-	<select id="proveedorInput" type="text" name="proveedorInput">
+	<select id="proveedorInput" name="proveedorInput">
 		<c:forEach items="${proveedores}" var="proveedor">
 			<option value="${proveedor.id}">${proveedor.name}</option>
 		</c:forEach>

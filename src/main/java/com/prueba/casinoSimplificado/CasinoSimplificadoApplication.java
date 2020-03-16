@@ -9,8 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -52,6 +55,18 @@ public class CasinoSimplificadoApplication {
 		resolver.setViewClass(JstlView.class);
 		resolver.setExposeContextBeansAsAttributes(exposeContextBeansAsAttributes);
 		return resolver;
+	}
+	
+	/**
+	 * Bean to store user session variables
+	 * @return
+	 */
+	@Bean
+	@Scope(
+			  value = WebApplicationContext.SCOPE_SESSION, 
+			  proxyMode = ScopedProxyMode.TARGET_CLASS)
+	public UserSession userSession(){
+		return new UserSession();
 	}
 
 }

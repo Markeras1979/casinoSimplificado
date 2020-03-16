@@ -1,6 +1,8 @@
 package com.prueba.casinoSimplificado.controller;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -11,7 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
+import com.prueba.casinoSimplificado.UserSession;
+import com.prueba.casinoSimplificado.dao.Casino;
+import com.prueba.casinoSimplificado.dao.Juego;
 import com.prueba.casinoSimplificado.dao.Jugador;
+import com.prueba.casinoSimplificado.juegosAPI.Ruleta;
+import com.prueba.casinoSimplificado.juegosAPI.Slot;
 import com.prueba.casinoSimplificado.service.CasinoService;
 import com.prueba.casinoSimplificado.service.JuegoService;
 import com.prueba.casinoSimplificado.service.JugadaService;
@@ -39,18 +46,17 @@ public class CasinoSimplificadoController {
 	@Resource
 	private JugadaService jugadaService;
 	
+	@Resource
+	UserSession userSession;
+	
+	
+	Instant start;
+	
+	
 	@GetMapping("/enterScreen")
 	public String enterScreen(final ModelMap modelmap) {
 		
-//		juegoService.saveJuego(juegos);
-		//modelmap.put("testJuego",juegoService.retrieveJuegoInfo(1));
-		//modelmap.put("testJuego2","test modelMap");
-		//modelmap.put("testJuego3", juegoService.retrieveAllJuego());
 		modelmap.put("proveedores", proveedorService.retrieveAllProveedores());
-//		modelmap.put("casino1Juego1", gson.toJson(casinoService.retrieveAllCasinos().get(0).getJuegos().get(0).getNombre()));
-//		modelmap.put("casino1Juego2", gson.toJson(casinoService.retrieveAllCasinos().get(0).getJuegos().get(1).getNombre()));
-//		modelmap.put("casino1Juego3", gson.toJson(casinoService.retrieveAllCasinos().get(0).getJuegos().get(2).getNombre()));
-//		modelmap.put("casino1Juego4", gson.toJson(casinoService.retrieveAllCasinos().get(0).getJuegos().get(3).getNombre()));
 		return "enterScreen";
 	}
 	
@@ -58,15 +64,32 @@ public class CasinoSimplificadoController {
 	@PostMapping("/chooseGame")
 	public String chooseGame(@RequestParam("jugadorInput") String jugadorInput,@RequestParam("proveedorInput") String proveedorInput,final ModelMap modelmap) {
 		if(jugadorInput != null && !jugadorInput.isEmpty()) {
-			Jugador jugador = jugadorService.findPlayerByNick(jugadorInput);
-			if(!jugador.getId().isEmpty()) {
-				Instant start = Instant.now();
-				modelmap.put("alias", jugador.getAlias());
+			userSession.setUser(jugadorService.findPlayerByNick(jugadorInput));
+			if(!userSession.getUser().getId().isEmpty()) {
+				//Instant start = Instant.now();
+				List<Casino> casinos = casinoService.retrieveAllCasinos();
+				modelmap.put("casinos", casinos);
+				modelmap.put("casinosNumber", casinos.size());
+				modelmap.put("alias", userSession.getUser().getAlias());
 			}
 		}else {
 			return "enterScreen";
 		}
 		return "chooseGame";
+	}
+	
+	
+	@PostMapping("/playGame")
+	public String playGame(@RequestParam("juegoSelected") String juegoSelected,@RequestParam("casinosInput") String casinosInput,final ModelMap modelmap) {
+		Jugador jugador = userSession.getUser();
+		userSession.setGameBeggining(Instant.now());		
+		userSession.setJuegoSelected(juegoService.retrieveJuegoInfo(Integer.valueOf(juegoSelected)));
+		
+		Ruleta ruleta = new Ruleta();
+		HashMap<Integer,String> result = ruleta.getJugada(1, "red", "10%");
+		Slot slot = new Slot();
+		HashMap<Integer,List<String>> result2 = slot.getJugada("33%");
+		return null;
 	}
 	
 }
