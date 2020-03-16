@@ -1,7 +1,8 @@
 package com.prueba.casinoSimplificado.controller;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.google.gson.Gson;
 import com.prueba.casinoSimplificado.UserSession;
 import com.prueba.casinoSimplificado.dao.Casino;
-import com.prueba.casinoSimplificado.dao.Juego;
 import com.prueba.casinoSimplificado.dao.Jugador;
-import com.prueba.casinoSimplificado.juegosAPI.Ruleta;
-import com.prueba.casinoSimplificado.juegosAPI.Slot;
 import com.prueba.casinoSimplificado.service.CasinoService;
 import com.prueba.casinoSimplificado.service.JuegoService;
 import com.prueba.casinoSimplificado.service.JugadaService;
@@ -82,14 +80,25 @@ public class CasinoSimplificadoController {
 	@PostMapping("/playGame")
 	public String playGame(@RequestParam("juegoSelected") String juegoSelected,@RequestParam("casinosInput") String casinosInput,final ModelMap modelmap) {
 		Jugador jugador = userSession.getUser();
+		
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("ss S");
+//		Date firstParsedDate = dateFormat.parse(a);
+//		Date secondParsedDate = dateFormat.parse(b);
+//		long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
+		//String timestampNow = timestamp.getTime()
 		userSession.setGameBeggining(Instant.now());		
 		userSession.setJuegoSelected(juegoService.retrieveJuegoInfo(Integer.valueOf(juegoSelected)));
 		
-		Ruleta ruleta = new Ruleta();
-		HashMap<Integer,String> result = ruleta.getJugada(1, "red", "10%");
-		Slot slot = new Slot();
-		HashMap<Integer,List<String>> result2 = slot.getJugada("33%");
-		return null;
+		modelmap.put("nick", userSession.getUser().getAlias());
+		modelmap.put("juegoSelected",userSession.getJuegoSelected());
+		modelmap.put("tiempoJuego",userSession.getUser().getTiempo_juego());
+		
+		
+//		Ruleta ruleta = new Ruleta();
+//		HashMap<String, Map<Integer, String>> result = ruleta.getJugada(1, "red", "10%");
+//		Slot slot = new Slot();
+//		HashMap<Integer,List<String>> result2 = slot.getJugada("33%");
+		return "playGame";
 	}
 	
 }
