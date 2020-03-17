@@ -43,8 +43,9 @@ CREATE TABLE jugador  (
 CREATE TABLE jugada  (
     id BIGINT IDENTITY NOT NULL PRIMARY KEY,
     jugador_id VARCHAR(50),
+    juego_id BIGINT,
     resultado VARCHAR(8),
-    apuesta BIGINT,
-    FOREIGN KEY (jugador_id) REFERENCES jugador(id)
+    FOREIGN KEY (jugador_id) REFERENCES jugador(id),
+    FOREIGN KEY (juego_id) REFERENCES juego(id)
 );
 

@@ -10,13 +10,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prueba.casinoSimplificado.UserSession;
+import com.prueba.casinoSimplificado.dao.Jugada;
 import com.prueba.casinoSimplificado.dto.SlotDTO;
 import com.prueba.casinoSimplificado.juegosAPI.Slot;
+import com.prueba.casinoSimplificado.service.JugadaService;
 
 @RestController
 public class SlotController {
 	@Resource
 	UserSession userSession;
+	
+	@Resource
+	JugadaService jugadaService;
 	
 	@ResponseBody()
 	@PostMapping(value = "/jugadaSlot",produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -34,6 +39,16 @@ public class SlotController {
 			Slot slot = new Slot();
 			retorno = slot.getJugada(userSession.getJuegoSelected().getPremio_probabilidad());
 			calculatePrize(retorno);
+			Jugada jugada = new Jugada();
+			jugada.setJuego(userSession.getJuegoSelected());
+			jugada.setJugador(userSession.getUser());
+			jugada.setResultado(retorno.getPrize()>0?"OK":"KO");
+			
+			try {
+				jugadaService.save(jugada);
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}else{
 			
 			retorno.setPartidaAcabada(true);

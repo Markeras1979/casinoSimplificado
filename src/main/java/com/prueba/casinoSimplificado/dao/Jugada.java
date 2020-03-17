@@ -3,6 +3,8 @@ package com.prueba.casinoSimplificado.dao;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,15 +18,19 @@ public class Jugada {
     
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
     private String id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Jugador jugador;
-//    jugador_id VARCHAR(50),
-//    resultado VARCHAR(8),
-//    apuesta BIGINT,
-//    FOREIGN KEY (jugador_id) REFERENCES jugador(id)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Juego juego;
+	
+	@Column(name="resultado")
+	String resultado;
+
 
 	public String getId() {
 		return id;
@@ -41,5 +47,23 @@ public class Jugada {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
+
+	public Juego getJuego() {
+		return juego;
+	}
+
+	public void setJuego(Juego juego) {
+		this.juego = juego;
+	}
+
+	public String getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(String resultado) {
+		this.resultado = resultado;
+	}
+	
+	
 	
 }

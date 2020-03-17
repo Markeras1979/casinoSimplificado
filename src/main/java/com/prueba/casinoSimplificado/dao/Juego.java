@@ -2,11 +2,13 @@ package com.prueba.casinoSimplificado.dao;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -43,6 +45,9 @@ public class Juego {
 	
 	@ManyToMany(mappedBy = "juegos",fetch = FetchType.LAZY)
 	private List<Casino> casinos;
+	
+	@OneToMany(mappedBy = "juego", cascade = CascadeType.ALL, orphanRemoval = true)
+	List<Jugada> jugadas;
 
 	public Integer getId() {
 		return id;
@@ -91,4 +96,14 @@ public class Juego {
 	public void setCasinos(List<Casino> casinos) {
 		this.casinos = casinos;
 	}
+
+	public List<Jugada> getJugadas() {
+		return jugadas;
+	}
+
+	public void setJugadas(List<Jugada> jugadas) {
+		this.jugadas = jugadas;
+	}
+	
+	
 }
