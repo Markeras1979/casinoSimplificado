@@ -35,6 +35,7 @@ CREATE TABLE jugador  (
     id VARCHAR(50) NOT NULL PRIMARY KEY,
     alias VARCHAR(30),
     tiempo_juego BIGINT,
+    credito BIGINT,
     proveedor_id BIGINT,
     FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
 );

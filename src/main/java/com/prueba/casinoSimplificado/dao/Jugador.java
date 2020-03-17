@@ -29,6 +29,8 @@ public class Jugador {
 	@Column(name="tiempo_juego")
 	private Integer tiempo_juego;
 	
+	@Column(name="credito")
+	private Integer credito;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Proveedor proveedor;
@@ -75,6 +77,16 @@ public class Jugador {
 	public void setJugadas(List<Jugada> jugadas) {
 		this.jugadas = jugadas;
 	}
+
+	public Integer getCredito() {
+		return credito;
+	}
+
+	public void setCredito(Integer credito) {
+		this.credito = credito;
+	}
+	
+	
 	
     //FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
 }

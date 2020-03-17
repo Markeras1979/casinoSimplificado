@@ -14,7 +14,7 @@ public class Ruleta {
 	private List<String> colors = Arrays.asList( "red", "black");
 	
 	public RuletaDTO getJugada(Integer number, String color,String probabilidad) {		
-		//HashMap<String, Map<Integer,String>> resultado = new HashMap<String, Map<Integer,String>>();
+		
 		RuletaDTO resultado = new RuletaDTO();
 		if(probabilidad.equals("10%")) {
 			Integer numeroResult = numbers.get((int) (Math.random()*10));

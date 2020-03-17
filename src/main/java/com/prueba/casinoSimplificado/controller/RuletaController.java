@@ -27,9 +27,9 @@ public class RuletaController {
 	public RuletaDTO jugadaRuleta(@RequestBody() final RuletaDTO params) {
 		Long beggining =userSession.getGameBeggining().toEpochMilli();
 		Long now = Instant.now().toEpochMilli();
-		//HashMap<String, Map<Integer,String>> res = new HashMap<String, Map<Integer,String>>();
 		RuletaDTO retorno = new RuletaDTO();
 		double diff = (now-beggining)/600;
+		
 		if(diff < userSession.getUser().getTiempo_juego()) {
 			Ruleta ruleta = new Ruleta();
 			retorno = ruleta.getJugada(Integer.valueOf(params.getNumero()), params.getColor(), userSession.getJuegoSelected().getPremio_probabilidad());

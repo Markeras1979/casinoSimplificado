@@ -81,23 +81,14 @@ public class CasinoSimplificadoController {
 	public String playGame(@RequestParam("juegoSelected") String juegoSelected,@RequestParam("casinosInput") String casinosInput,final ModelMap modelmap) {
 		Jugador jugador = userSession.getUser();
 		
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("ss S");
-//		Date firstParsedDate = dateFormat.parse(a);
-//		Date secondParsedDate = dateFormat.parse(b);
-//		long diff = secondParsedDate.getTime() - firstParsedDate.getTime();
-		//String timestampNow = timestamp.getTime()
 		userSession.setGameBeggining(Instant.now());		
 		userSession.setJuegoSelected(juegoService.retrieveJuegoInfo(Integer.valueOf(juegoSelected)));
 		
 		modelmap.put("nick", userSession.getUser().getAlias());
 		modelmap.put("juegoSelected",userSession.getJuegoSelected());
 		modelmap.put("tiempoJuego",userSession.getUser().getTiempo_juego());
+		modelmap.put("creditoInicial", userSession.getUser().getCredito());
 		
-		
-//		Ruleta ruleta = new Ruleta();
-//		HashMap<String, Map<Integer, String>> result = ruleta.getJugada(1, "red", "10%");
-//		Slot slot = new Slot();
-//		HashMap<Integer,List<String>> result2 = slot.getJugada("33%");
 		return "playGame";
 	}
 	

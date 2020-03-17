@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Choose Game and play</title>
+<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script>
 
 	function hideOrShowGameSelect(){
@@ -23,6 +24,15 @@
 	
 	function setJuegoSelected(input){
 		 document.getElementById("juegoSelected").value =  document.getElementById(input).value;
+	}
+	
+	function enableSubmit(id){
+		console.log($(id).val());
+		if($(id).val() != "" ){
+			$("#submit").prop("disabled",false);
+		}else{
+			$("#submit").prop("disabled",true);
+		}
 	}
 </script>
 </head>
@@ -43,7 +53,7 @@
 		<input type="hidden" id="juegosSize${casino.id}">		
 		<div id="juegosInput${casino.id}" style="display: none;">
 			<label for="juegosInputSelect${casino.id}">Juegos para ${casino.name}</label>
-			<select id="juegosInputSelect${casino.id}" onchange="setJuegoSelected('juegosInputSelect${casino.id}')" name="juegosInput">
+			<select id="juegosInputSelect${casino.id}" onchange="setJuegoSelected('juegosInputSelect${casino.id}'); enableSubmit(juegosInputSelect${casino.id});" name="juegosInput">
 				<option value="" selected>Choose Game</option>
 				<c:forEach items="${casino.juegos}" var="juego"  varStatus="loop">
 					<option value="${juego.id}">${juego.nombre}</option>
@@ -53,7 +63,7 @@
 	</c:forEach>
 	<input type="hidden" id="juegoSelected" name="juegoSelected">
 </div>
-<div style="margin: 10px;"><input type="submit" value="Submit" /></div>
+<div style="margin: 10px;"><input id="submit" type="submit" value="Submit" disabled="true"/></div>
 </form>
 </body>
 </html>

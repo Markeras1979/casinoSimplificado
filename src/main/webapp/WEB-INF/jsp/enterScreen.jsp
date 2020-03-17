@@ -23,13 +23,16 @@
 <div style="margin: 10px;">
 	<label for="proveedorInput">Proveedor</label>
 	<select id="proveedorInput" name="proveedorInput">
-		<c:forEach items="${proveedores}" var="proveedor">
-			<option value="${proveedor.id}">${proveedor.name}</option>
+		<c:forEach items="${proveedores}" var="proveedor" varStatus="loop">
+			<c:choose>
+				<c:when test="${loop.index == 0}"><option selected value="${proveedor.id}">${proveedor.name}</option></c:when>
+				<c:otherwise><option value="${proveedor.id}">${proveedor.name}</option></c:otherwise>
+			</c:choose>
 		</c:forEach>
 	</select>
 </div>
 <!-- <div style="margin: 10px;"><button onclick="loadInfo()">Submit</button></div> -->
-<div style="margin: 10px;"><input type="submit" value="Submit" /></div>
+<div style="margin: 10px;"><input type="submit" value="Submit"/></div>
 </form>
 </body>
 </html>
